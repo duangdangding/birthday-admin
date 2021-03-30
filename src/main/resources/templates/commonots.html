@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H+ 后台主题UI框架 - Bootstrap Table</title>
+
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css?v=4.1.0}" type="text/css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" />
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <!--<div class="ibox-title">
+            <h5>留言信息</h5>
+        </div>-->
+        <!--<div class="btn-group hidden-xs" id="exampleToolbar" role="group">
+            <button type="button" class="btn btn-outline btn-default">
+                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn-outline btn-default">
+                <i class="glyphicon glyphicon-heart" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn-outline btn-default">
+                <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+            </button>
+        </div>-->
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <!-- Example Events -->
+                    <div id="toolbar" style="margin-bottom: -50px;display: inline-flex ">
+                        <button class="btn btn-danger" onclick="deleteComm()">删除</button>
+                        <input class="form-control" type="text" style="width: 300px;margin-left: 50px" />
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+                    <table id="commits" data-toggle="table" class="table table-striped table-bordered table-hover" data-mobile-responsive="true">
+                    </table>
+                    <!-- End Example Events -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+<script th:src="@{/js/jquery.min.js?v=2.1.4}" ></script>
+<script th:src="@{/js/popper.min_1.14.7.js}" ></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+<script th:src="@{/js/bootstrap-table-zh-CN.min.js}" ></script>
+
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        GetOrderData();
+        $(window).resize(function() {
+            $('#commits').bootstrapTable('resetView', {
+                height: $(window).height() - 100
+            });
+        });
+    })
+    
+    function deleteComm() {
+        console.log(overAllIds);
+        $("#commits").bootstrapTable('refresh');
+    }
+    $('#commits').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table',function(e,rows) {
+        var datas = $.isArray(rows) ? rows : [rows];        // 点击时获取选中的行或取消选中的行
+        examine(e.type, datas);                      // 保存到全局 Set() 里
+    })
+    var overAllIds = new Array();  //全局数组
+    function examine(type,datas){
+        if(type === 'check' || type === 'check-all'){
+            for(var i = 0;i<datas.length;i++) {
+                var id = datas[i].commentId;
+                var index = overAllIds.indexOf(id);
+                if(index === -1) {
+                    overAllIds.push(id);
+                }
+            }
+        }else{
+            if (type === 'uncheck-all') {
+                overAllIds = new Array();
+            } else {
+                for(var i = 0;i<datas.length;i++) {
+                    var id = datas[i].commentId;
+                    var index = overAllIds.indexOf(id);
+                    if(index > -1) {
+                        overAllIds.splice(index,1);
+                    }
+                }
+            }
+        }
+    }
+
+    function GetOrderData() {
+        $("#commits").bootstrapTable('destroy');//销毁表格
+        $('#commits').bootstrapTable({
+            clickToSelect: true,//启用单击选中
+            striped:true,//斑马线效果
+            showRefresh:true,//刷新按钮
+            showColumns:true,//可以勾选隐藏或显示特定列
+            pagination: true,//启用分页
+            url: "/commAll",//请求地址
+            toolbar: '#exampleToolbar',
+            // contentType: "application/x-www-form-urlencoded",//post提交必须要有
+            method: 'get',//提交方式
+            singleSelect: false,
+            height: $(window).height() - 100,
+            pageNumber: 1,     //初始化加载第一页，默认第一页
+            pageSize: 100,      //每页的记录行数（*）
+            pageList: [100, 200, 300, 400,500],  //可供选择的每页的行数（*）
+            queryParamsType: 'limit',//传入参数类型
+            queryParams: function (params) {
+                return {
+                    pageSize: params.limit,//每页显示多少条
+                    pageNumber: params.offset / params.limit + 1//当前页码
+                }
+            },
+            sidePagination: "server",//服务端分页
+            /*responseHandler: function (res) {//自定义回传数据
+                if (res.data == null) {
+                    return {
+                        "total": res.data,//总页数
+                        "rows": res.data   //回传的数据
+                    }
+                }
+                else {
+                    return {
+                        "total": res.data.total,
+                        "rows": res.data.data
+                    };
+                }
+            },*/
+            columns: [
+                {checkbox: true,                          // 显示复选框
+                    formatter: function (i,row) {            // 每次加载 checkbox 时判断当前 row 的 id 是否已经存在全局 Set() 里
+                        if($.inArray(row.commentId,overAllIds)!=-1){// 因为 判断数组里有没有这个 id
+                            return {
+                                checked : true               // 存在则选中
+                            }
+                        }
+                    }
+                },
+                {
+                    field:'commentId',
+                    title:'序号'
+                    // width: '15%'
+                },
+                {
+                    field:'context',
+                    title:'留言内容',
+                    width: '15%'
+                    // editable: true,
+                },
+                {
+                    field:'createtime',
+                    title:'留言时间',
+                    width: '20%'
+                },
+                {
+                    field:'userMsg.userName',
+                    title:'姓名'
+                    // width: '15%',
+                },
+                {
+                    field:'userMsg.userXz',
+                    title:'星座'
+                    // width: '15%',
+                },
+                {
+                    field:'userMsg.userAddress',
+                    title:'地址信息',
+                    // visible: true,
+                    width: '10%'
+                },
+                {
+                    field:'userMsg.userIp',
+                    title:'IP'
+                    // width: '15%'
+                },
+                {
+                    field:'userMsg.loginTime',
+                    title:'最后登录'
+                    // width: '15%'
+                },
+                {
+                    field:'userMsg.loginSum',
+                    title:'登录次数'
+                    // width: '15%'
+                },
+                {
+                    field:'userMsg.userBg',
+                    title:'背景'
+                    // width: '15%'
+                }
+            ]
+        });
+    }
+</script>
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:06 GMT -->
+</html>

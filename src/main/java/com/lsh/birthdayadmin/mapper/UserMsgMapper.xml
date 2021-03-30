@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lsh.birthdayadmin.mapper.UserMsgMapper">
+
+    <!-- 查找信息 -->
+    <select id="findAll" resultType="com.lsh.birthdayadmin.entry.UserMsg">
+        select * from user_msg
+    </select>
+    <select id="findByUserId" resultType="com.lsh.birthdayadmin.entry.UserMsg">
+        select * from user_msg where user_id = #{userId}
+    </select>
+    <select id="findBynameip" resultType="com.lsh.birthdayadmin.entry.UserMsg" parameterType="com.lsh.birthdayadmin.entry.UserMsg">
+        select * from user_msg WHERE user_name = #{userName} and user_ip = #{userIp}
+    </select>
+    <update id="updateSum" parameterType="com.lsh.birthdayadmin.entry.UserMsg">
+        UPDATE user_msg SET login_sum = login_sum + 1 WHERE user_name = #{userName} and user_ip = #{userIp}
+    </update>
+    <update id="updateBg" parameterType="com.lsh.birthdayadmin.entry.UserMsg">
+        UPDATE user_msg SET user_bg = #{userBg} WHERE user_name = #{userName} and user_ip = #{userIp}
+    </update>
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="userId" parameterType="com.lsh.birthdayadmin.entry.UserMsg">
+        insert into user_msg (user_name,user_ip,login_time,user_address,user_xz) values(
+            #{userName},#{userIp},now(),#{userAddress},#{userXz}
+        )
+    </insert>
+    
+</mapper>

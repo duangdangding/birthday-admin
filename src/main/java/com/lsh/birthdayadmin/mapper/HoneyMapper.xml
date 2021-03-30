@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lsh.birthdayadmin.mapper.HoneyMapper">
+
+    <!-- 查找信息 -->
+    <select id="findAll" resultType="com.lsh.birthdayadmin.entry.Honey">
+        select * from honey
+    </select>
+    <update id="update" parameterType="com.lsh.birthdayadmin.entry.Honey">
+        UPDATE honey SET h_name=#{hName} WHERE h_id=#{hId}
+    </update>
+    
+</mapper>
