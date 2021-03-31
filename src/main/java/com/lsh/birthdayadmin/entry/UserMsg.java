@@ -1,10 +1,14 @@
 package com.lsh.birthdayadmin.entry;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@TableName("user_msg")
 public class UserMsg implements Serializable {
-    
+    @TableId
     private int userId;
     private String userName;
     private String userIp;

@@ -10,13 +10,10 @@
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
-
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css?v=3.3.6}" type="text/css"/>
     <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" type="text/css"/>
     <link rel="stylesheet" th:href="@{/css/style.min862f.css?v=4.1.0}" type="text/css"/>
-    <!--<link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
-    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
-    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">-->
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -31,13 +28,11 @@
                     <div class="dropdown profile-element">
                         <span><img alt="image" class="img-circle" src="/img/profile_small.jpg" /></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
+                            <span class="clear">
+                                <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
-                                </span>
+                            </span>
                         </a>
-                    </div>
-                    <div class="logo-element">H+
                     </div>
                 </li>
                 <li>
@@ -47,23 +42,23 @@
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level">
-                        <li>
-                            <!-- 留言信息 -->
+                        <!--<li>
+                            &lt;!&ndash; 留言信息 &ndash;&gt;
                             <a class="J_menuItem" href="/commonots" data-index="0">留言信息</a>
-                            <!--                                <a class="J_menuItem" href="index_v1.html" data-index="0">主页示例一</a>-->
+                            &lt;!&ndash;                                <a class="J_menuItem" href="index_v1.html" data-index="0">主页示例一</a>&ndash;&gt;
+                        </li>-->
+                        <li>
+                            <!--用户信息-->
+                            <a class="J_menuItem" href="/users">用户信息</a>
                         </li>
                         <li>
                             <!--添加敏感词-->
-                            <a class="J_menuItem" href="/threes2">三个表格</a>
-                        </li>
-                        <li>
-                            <!--添加随机名-->
-                            <a class="J_menuItem" href="index_v3.html">主页示例三</a>
+                            <a class="J_menuItem" href="/threes2" title="敏感词，主角名，随机名字">三个表格</a>
                         </li>
                     </ul>
 
                 </li>
-                <li>
+                <!--<li>
                     <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">表单</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a class="J_menuItem" href="form_basic.html">基本表单</a>
@@ -103,7 +98,7 @@
                         <li><a class="J_menuItem" href="layerdate.html">日期选择器layerDate</a>
                         </li>
                     </ul>
-                </li>
+                </li>-->
 
             </ul>
         </div>
@@ -127,12 +122,12 @@
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="0">留言信息</a>
                 </div>
             </nav>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v148b2.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/commonots" frameborder="0" data-id="0" seamless></iframe>
         </div>
         <div class="footer">
             <div class="pull-right">&copy; 2020
@@ -217,14 +212,15 @@
 <script th:src="@{/js/hplus.min.js?v=4.1.0}" ></script>
 <script th:src="@{/js/contabs.min.js}" ></script>
 <script th:src="@{/js/pace.min.js}" ></script>
-<!--<script src="js/jquery.min.js?v=2.1.4"></script>
-<script src="js/bootstrap.min.js?v=3.3.6"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="js/plugins/layer/layer.min.js"></script>
-<script src="js/hplus.min.js?v=4.1.0"></script>
-<script type="text/javascript" src="js/contabs.min.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>-->
 </body>
-
+<script type="text/javascript">
+    $("#side-menu a").each(function () {
+        var $showLevalTwo = $(this).parent().parent();//2级菜单栏
+        $showLevalTwo.parent().addClass('active');//1 leval maneu
+        $showLevalTwo.attr('aria-expanded', true);
+        $showLevalTwo.addClass('in');
+        $showLevalTwo.siblings('aria-expanded', true);
+        $(this).parent().addClass('active');
+    });
+</script>
 </html>

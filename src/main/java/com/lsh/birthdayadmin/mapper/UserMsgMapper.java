@@ -1,15 +1,8 @@
 package com.lsh.birthdayadmin.mapper;
 
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lsh.birthdayadmin.entry.UserMsg;
 
-public interface UserMsgMapper {
+public interface UserMsgMapper extends BaseMapper<UserMsg> {
     
-    int updateSum(UserMsg userMsg);
-    
-    Integer addUser(UserMsg userMsg);
-    
-    UserMsg findBynameip(UserMsg userMsg);
-    
-    int updateBg(UserMsg userMsg);
 }

@@ -1,10 +1,15 @@
 package com.lsh.birthdayadmin.entry;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@TableName("comment")
 public class Comment implements Serializable {
     
+    @TableId
     private Long commentId;
     private String context;
     private Timestamp createtime;

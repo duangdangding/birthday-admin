@@ -22,5 +22,10 @@ public class HoneyCtr {
             return ResultDtoManager.success("设置失败~");
         }
     }
+    @RequestMapping("/findHY")
+    public String findHY(){
+        String name =honeyService.find().gethName();
+        return name;
+    }
     
 }

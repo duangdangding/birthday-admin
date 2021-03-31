@@ -11,14 +11,15 @@
             select="com.lsh.birthdayadmin.mapper.UserMsgMapper.findByUserId"/>
     </resultMap>
     <!-- 查找信息 -->
-    <select id="selectByPage1" resultMap="commontMap">
+    <select id="selectByPage1" resultMap="commontMap" parameterType="string">
         select * from comment ct 
         left join user_msg um on um.user_id = ct.user_id
+        <where>
+            <if test="content != null and content != ''">
+                ct.context like concat('%', #{content}, '%')
+            </if>
+        </where>
         order by createtime desc
     </select>
     
-    <insert id="addComm" parameterType="com.lsh.birthdayadmin.entry.Comment">
-        insert into comment (context,createtime,user_id) values (#{context,jdbcType=VARCHAR},now(),#{userId})
-    </insert>
-
 </mapper>
